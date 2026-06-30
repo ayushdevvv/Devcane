@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { FiCopy, FiCheck } from "react-icons/fi";
 
-const CodeBlock = ({ className, children }) => {
+const Codeblock = ({ className, children }) => {
   const [copied, setCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || "");
   const language = match ? match[1] : "text";
@@ -17,7 +17,7 @@ const CodeBlock = ({ className, children }) => {
 
   return (
     <div className="my-4 rounded-xl overflow-hidden border border-[#1a2d4a] group">
-      {/* Header */}
+   
       <div className="flex items-center justify-between px-4 py-2.5 bg-[#0a1428] border-b border-[#1a2d4a]">
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-slate-600">{"<>"}</span>
@@ -56,4 +56,4 @@ const CodeBlock = ({ className, children }) => {
   );
 };
 
-export default CodeBlock;
+export default Codeblock;

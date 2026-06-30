@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FiUser, FiCopy, FiCheck } from "react-icons/fi";
 import { BsStars } from "react-icons/bs";
-import CodeBlock from "./CodeBlock.jsx";
+import Codeblock from "./Codeblock.jsx";
 
 const MessageBubble = ({ role, content }) => {
   const [copied, setCopied] = useState(false);
@@ -72,7 +72,7 @@ const MessageBubble = ({ role, content }) => {
                 hr: () => <hr className="border-[#1a2d4a] my-4" />,
                 code({ inline, className, children, ...props }) {
                   if (inline) return <code className="text-[#22c55e] bg-[#0a1428] border border-[#1a2d4a] px-1.5 py-0.5 rounded text-[12px] mono" {...props}>{children}</code>;
-                  return <CodeBlock className={className}>{children}</CodeBlock>;
+                  return <Codeblock className={className}>{children}</Codeblock>;
                 },
                 table: ({ children }) => (
                   <div className="overflow-x-auto my-4">
