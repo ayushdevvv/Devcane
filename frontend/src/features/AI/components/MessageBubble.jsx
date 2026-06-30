@@ -49,7 +49,6 @@ const MessageBubble = ({ role, content }) => {
             </button>
           </div>
 
-          {/* Content */}
           <div className="px-5 py-4">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}

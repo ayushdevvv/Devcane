@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../services/auth.context";
-import Navbar from "../components/Navbar.jsx";
+import NavBar from "../components/NavBar.jsx";
 import WorkspaceDrawer from "../components/WorkspaceDrawer";
 import Hero from "../components/Hero";
 import WorkspacePreview from "../components/WorkspacePreview";
@@ -26,7 +26,7 @@ const Home = () => {
       </div>
 
       <WorkspaceDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      <Navbar onMenuClick={() => setDrawerOpen(true)} />
+      <NavBar onMenuClick={() => setDrawerOpen(true)} />
 
       <main className="relative z-10">
         <Hero user={user} />

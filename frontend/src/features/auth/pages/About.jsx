@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar.jsx";
+import NavBar from "../components/NavBar.jsx";
 import { BsStars } from "react-icons/bs";
 import { FiCode, FiFileText, FiBook, FiZap, FiShield, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -14,9 +14,8 @@ const About = () => {
       </div>
 
       <div className="relative z-10">
-        <Navbar />
+        <NavBar />
 
-        {/* Hero */}
         <section className="max-w-4xl mx-auto px-6 pt-24 pb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-[#f59e0b]/25 bg-[#f59e0b]/8 text-xs font-bold text-[#f59e0b] tracking-widest uppercase">
            About Devcane
@@ -30,7 +29,7 @@ const About = () => {
           </p>
         </section>
 
-        {/* Mission */}
+        
         <section className="max-w-5xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-[#060d1a] border border-[#22c55e]/20 rounded-2xl p-8">
@@ -54,7 +53,7 @@ const About = () => {
           </div>
         </section>
 
-        {/* Platform */}
+  
         <section className="max-w-5xl mx-auto px-6 pb-24">
           <div className="text-center mb-12">
             <p className="text-xs text-[#22c55e] font-bold uppercase tracking-widest mb-3">Platform</p>
@@ -80,7 +79,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Stats */}
         <section className="max-w-4xl mx-auto px-6 pb-24">
           <div className="bg-gradient-to-br from-[#0a1428] to-[#060d1a] border border-[#1a2d4a] rounded-3xl p-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -97,7 +95,7 @@ const About = () => {
           </div>
         </section>
 
-        {/* CTA */}
+      
         <section className="max-w-2xl mx-auto px-6 pb-24 text-center">
           <h2 className="text-3xl font-black text-white mb-3">Ready to join?</h2>
           <p className="text-slate-400 text-[15px] mb-8">Start for free. No credit card required.</p>

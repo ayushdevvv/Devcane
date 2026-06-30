@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../services/auth.context";
 import { useAIContext } from "../../AI/services/ai.context";
-import Navbar from "../components/Navbar.jsx";
+import NavBar from "../components/NavBar.jsx";
 import WorkspaceDrawer from "../components/WorkspaceDrawer";
 import Hero from "../components/Hero";
 import RecentActivity from "../components/RecentActivity";
@@ -26,7 +26,7 @@ const Dashboard = () => {
       </div>
 
       <WorkspaceDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      <Navbar onMenuClick={() => setDrawerOpen(true)} />
+      <NavBar onMenuClick={() => setDrawerOpen(true)} />
 
       <main className="relative z-10 mt-5">
      
