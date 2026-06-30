@@ -6,8 +6,10 @@ import {
   register,
   forgotPassword,
   resetPassword,
-  updateProfile
+  updateProfile,
 } from "../services/auth.api";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -59,7 +61,6 @@ export const useAuth = () => {
       setLoading(true);
 
       await logout();
-
       clearUser();
     } finally {
       setLoading(false);
@@ -67,19 +68,16 @@ export const useAuth = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href =
-      "http://localhost:3000/api/auth/google/login";
+    window.location.href = `${API_URL}/api/auth/google/login`;
   };
 
   const handleGoogleRegister = () => {
-    window.location.href =
-      "http://localhost:3000/api/auth/google/register";
+    window.location.href = `${API_URL}/api/auth/google/register`;
   };
 
   const handleForgotPassword = async (email) => {
     try {
       setLoading(true);
-
       return await forgotPassword(email);
     } finally {
       setLoading(false);
@@ -89,29 +87,27 @@ export const useAuth = () => {
   const handleResetPassword = async (token, password) => {
     try {
       setLoading(true);
-
       return await resetPassword(token, password);
     } finally {
       setLoading(false);
     }
   };
 
-
   const handleUpdateProfile = async (payload) => {
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const data = await updateProfile(payload);
+      const data = await updateProfile(payload);
 
-    if (data.success) {
-      setUser(data.user);
+      if (data.success) {
+        setUser(data.user);
+      }
+
+      return data;
+    } finally {
+      setLoading(false);
     }
-
-    return data;
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return {
     user,
