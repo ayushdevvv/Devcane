@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.jsx";
 import { BsStars } from "react-icons/bs";
 import { FiCode, FiFileText, FiBook, FiZap, FiShield, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";

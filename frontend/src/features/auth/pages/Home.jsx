@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../services/auth.context";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.jsx";
 import WorkspaceDrawer from "../components/WorkspaceDrawer";
 import Hero from "../components/Hero";
 import WorkspacePreview from "../components/WorkspacePreview";

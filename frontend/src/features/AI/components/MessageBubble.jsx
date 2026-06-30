@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FiUser, FiCopy, FiCheck } from "react-icons/fi";
 import { BsStars } from "react-icons/bs";
-import CodeBlock from "./CodeBlock";
+import CodeBlock from "./CodeBlock.jsx";
 
 const MessageBubble = ({ role, content }) => {
   const [copied, setCopied] = useState(false);
