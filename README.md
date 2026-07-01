@@ -27,10 +27,6 @@ AI-powered developer workspace designed to help developers build, learn, and col
 - Passport.js
 - Nodemailer
 
-**AI**
-- Groq API
-- Llama 3.3 70B Versatile
-
 ## Roadmap
 
 - AI Resume Analyzer
