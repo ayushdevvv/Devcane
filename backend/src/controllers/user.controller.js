@@ -9,6 +9,7 @@ import {
   sendForgotPasswordEmail,
 } from "../utils/mail/mailService.js";
 
+
 export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -38,9 +39,7 @@ export const createUser = async (req, res) => {
       provider: "local",
     });
 
-    sendWelcomeEmail(user.email, user.name).catch((err) =>
-      console.log("Welcome email failed:", err)
-    );
+    sendWelcomeEmail(user.email, user.name).catch(console.log);
 
     return sendToken(user, 201, res);
   } catch (error) {
@@ -50,6 +49,7 @@ export const createUser = async (req, res) => {
     });
   }
 };
+
 
 export const login = async (req, res) => {
   try {
@@ -87,12 +87,8 @@ export const login = async (req, res) => {
       });
     }
 
-    sendLoginAlertEmail(
-      user.email,
-      req.ip,
-      req.headers["user-agent"]
-    ).catch((err) =>
-      console.log("Login alert email failed:", err)
+    sendLoginAlertEmail(user.email, req.ip, req.headers["user-agent"]).catch(
+      console.log
     );
 
     return sendToken(user, 200, res);
@@ -104,30 +100,30 @@ export const login = async (req, res) => {
   }
 };
 
+
 export const googleCallback = async (req, res) => {
   try {
     const user = req.user;
 
+    if (!user) {
+      return res.redirect(process.env.CLIENT_URL || "/");
+    }
+
     if (user.isNewUser) {
-      sendWelcomeEmail(user.email, user.name).catch((err) =>
-        console.log("Google welcome email failed:", err)
-      );
+      sendWelcomeEmail(user.email, user.name).catch(console.log);
     } else {
-      sendLoginAlertEmail(
-        user.email,
-        req.ip,
-        req.headers["user-agent"]
-      ).catch((err) =>
-        console.log("Google login alert email failed:", err)
+      sendLoginAlertEmail(user.email, req.ip, req.headers["user-agent"]).catch(
+        console.log
       );
     }
 
     return sendToken(user, 200, res, true);
   } catch (error) {
     console.log(error);
-    return res.redirect(`${process.env.CLIENT_URL}/login`);
+    return res.redirect(process.env.CLIENT_URL || "/");
   }
 };
+
 
 export const logout = async (req, res) => {
   try {
@@ -150,6 +146,7 @@ export const logout = async (req, res) => {
     });
   }
 };
+
 
 export const getMe = async (req, res) => {
   try {
@@ -193,15 +190,13 @@ export const forgotPassword = async (req, res) => {
       .digest("hex");
 
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     await user.save();
 
     const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    sendForgotPasswordEmail(user.email, resetLink).catch((err) =>
-      console.log("Forgot password email error:", err)
-    );
+    sendForgotPasswordEmail(user.email, resetLink).catch(console.log);
 
     return res.status(200).json({
       success: true,
@@ -215,6 +210,7 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
+
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
@@ -227,16 +223,11 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-  
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(token)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-  
     const user = await userModel.findOne({
       resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: new Date() },
+      resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -246,11 +237,7 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
-
-    
+    user.password = await bcrypt.hash(password, 10);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -272,11 +259,18 @@ export const updateProfile = async (req, res) => {
   try {
     const { name, currentPassword, newPassword } = req.body;
 
- 
-    if (name && name.trim()) {
-      req.user.name = name.trim();
+    const user = await userModel.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
+    if (name && name.trim()) {
+      user.name = name.trim();
+    }
 
     if (currentPassword || newPassword) {
       if (!currentPassword || !newPassword) {
@@ -286,17 +280,14 @@ export const updateProfile = async (req, res) => {
         });
       }
 
-      if (req.user.provider !== "local") {
+      if (user.provider !== "local") {
         return res.status(400).json({
           success: false,
           message: "Google accounts cannot change password.",
         });
       }
 
-      const isMatch = await bcrypt.compare(
-        currentPassword,
-        req.user.password
-      );
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
 
       if (!isMatch) {
         return res.status(401).json({
@@ -319,20 +310,20 @@ export const updateProfile = async (req, res) => {
         });
       }
 
-      req.user.password = await bcrypt.hash(newPassword, 10);
+      user.password = await bcrypt.hash(newPassword, 10);
     }
 
-    await req.user.save();
+    await user.save();
 
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully.",
       user: {
-        id: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
-        avatar: req.user.avatar,
-        provider: req.user.provider,
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider,
       },
     });
   } catch (error) {
