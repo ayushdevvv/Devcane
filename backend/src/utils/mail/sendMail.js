@@ -1,11 +1,8 @@
-import dotenv from "dotenv";
 import apiInstance from "../../config/brevo.js";
-
-dotenv.config();
 
 export const sendMail = async ({ to, subject, html }) => {
   try {
-    await apiInstance.sendTransacEmail({
+    const res = await apiInstance.post("/smtp/email", {
       sender: {
         name: "DEVCANE",
         email: process.env.EMAIL_FROM,
@@ -15,11 +12,13 @@ export const sendMail = async ({ to, subject, html }) => {
       htmlContent: html,
     });
 
-    console.log(`📧 Email sent to ${to}`);
+    console.log("📧 Email sent:", res.data.messageId);
+
+    return res.data;
   } catch (error) {
     console.error(
       "❌ Brevo Email Error:",
-      error.response?.body || error.message || error
+      error.response?.data || error.message
     );
   }
 };
