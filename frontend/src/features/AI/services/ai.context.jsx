@@ -18,7 +18,7 @@ export const AIProvider = ({ children }) => {
       const data = await getSessions();
       setSessions(data.sessions || []);
     } catch {
-      // silent
+   
     }
   }, []);
 
@@ -27,7 +27,7 @@ export const AIProvider = ({ children }) => {
       const data = await getQuota();
       setQuota(data.quota);
     } catch {
-      // silent — don't block UI if quota check fails
+    
     }
   }, []);
 

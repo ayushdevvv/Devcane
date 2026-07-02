@@ -12,7 +12,7 @@ const WorkspacePreview = () => (
 
       <div className="rounded-2xl sm:rounded-[30px] border border-[#1a2d4a] bg-[#060d1a] shadow-[0_40px_120px_rgba(0,0,0,.5)] overflow-hidden">
 
-        
+
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-[#1a2d4a] bg-[#03070f]">
           <div className="flex items-center gap-2 sm:gap-4">
             <div className="flex gap-1.5">
@@ -35,10 +35,10 @@ const WorkspacePreview = () => (
           </div>
         </div>
 
-        
+
         <div className="flex flex-col lg:grid lg:grid-cols-[220px_1fr]">
 
-        
+
           <aside className="hidden lg:block border-r border-[#1a2d4a] bg-[#03070f] p-4">
             <button className="w-full rounded-xl bg-[#22c55e] text-white py-2.5 font-bold text-sm">
               + New Chat
@@ -55,7 +55,7 @@ const WorkspacePreview = () => (
             </div>
           </aside>
 
-         
+
           <div className="lg:hidden flex items-center gap-2 px-4 py-3 border-b border-[#1a2d4a] bg-[#03070f] overflow-x-auto scrollbar-none">
             <button className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#22c55e] text-white text-xs font-bold">
               <FiPlus size={11} /> New
@@ -69,7 +69,7 @@ const WorkspacePreview = () => (
 
           <main className="flex flex-col bg-[#060d1a]">
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-             
+
               <div className="flex justify-end">
                 <div className="rounded-2xl rounded-br-sm bg-gradient-to-r from-[#22c55e] to-[#16a34a] px-4 py-3 max-w-[85%] sm:max-w-md text-white text-xs sm:text-sm shadow-lg">
                   Review my authentication middleware and optimize it.
@@ -97,7 +97,7 @@ const WorkspacePreview = () => (
                       <button className="text-slate-600"><FiCopy size={11} /></button>
                     </div>
                     <pre className="p-3 sm:p-4 text-[11px] sm:text-xs text-[#22c55e] mono leading-6 overflow-x-auto">
-{`const decoded = jwt.verify(token, SECRET);
+                      {`const decoded = jwt.verify(token, SECRET);
 req.user = decoded;
 next();`}
                     </pre>
@@ -106,7 +106,7 @@ next();`}
               </div>
             </div>
 
-            
+
             <div className="border-t border-[#1a2d4a] bg-[#03070f] p-3 sm:p-4">
               <div className="rounded-xl sm:rounded-2xl border border-[#1a2d4a] bg-[#060d1a] p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-2.5 sm:mb-3">

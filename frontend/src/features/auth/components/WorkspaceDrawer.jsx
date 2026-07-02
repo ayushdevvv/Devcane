@@ -17,7 +17,7 @@ const WorkspaceDrawer = ({ open, onClose }) => (
       className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-all duration-300 ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
     />
 
-    {/* Drawer */}
+  
     <aside className={`fixed top-0 left-0 z-50 h-full w-[min(360px,90vw)] bg-[#060d1a]/98 backdrop-blur-2xl border-r border-[#1a2d4a] shadow-2xl transition-all duration-300 flex flex-col ${open ? "translate-x-0" : "-translate-x-full"}`}>
 
       <div className="flex items-center justify-between px-5 sm:px-7 h-16 sm:h-20 border-b border-[#1a2d4a] flex-shrink-0">
@@ -33,7 +33,7 @@ const WorkspaceDrawer = ({ open, onClose }) => (
         </button>
       </div>
 
-      {/* Content */}
+      
       <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6">
         <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-4 font-bold">Workspace</p>
 

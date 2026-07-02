@@ -20,7 +20,7 @@ const RecentActivity = () => {
     <section className="px-4 sm:px-6 pb-16 sm:pb-28">
       <div className="max-w-7xl mx-auto space-y-10 sm:space-y-14">
 
-        {/* Tools row */}
+     
         <div>
           <p className="text-[10px] sm:text-xs text-blue-400 font-bold uppercase tracking-widest mb-4 sm:mb-5">Your Tools</p>
           <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
@@ -48,7 +48,7 @@ const RecentActivity = () => {
           </div>
         </div>
 
-        {/* Recent activity */}
+     
         <div>
           <div className="flex items-center justify-between mb-4 sm:mb-5">
             <p className="text-[10px] sm:text-xs text-[#22c55e] font-bold uppercase tracking-widest">Recent Activity</p>

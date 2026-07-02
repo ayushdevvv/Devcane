@@ -90,7 +90,7 @@ const Settings = () => {
             <p className="text-slate-500 text-sm mt-1">Update your personal information</p>
           </div>
 
-          {/* Avatar card */}
+         
           <div className="bg-[#0a1428] border border-[#1a2d4a] rounded-2xl p-5 flex items-center gap-4">
             <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-xl font-black text-white shadow-xl flex-shrink-0">
               {user?.name?.charAt(0).toUpperCase()}
@@ -101,7 +101,7 @@ const Settings = () => {
             </div>
           </div>
 
-          {/* Edit form */}
+         
           <div className="bg-[#0a1428] border border-[#1a2d4a] rounded-2xl p-5 space-y-4">
             <div>
               <label className={labelClass}>Full Name</label>
@@ -200,7 +200,7 @@ const Settings = () => {
             <p className="text-slate-500 text-sm mt-1">Irreversible actions — proceed with caution</p>
           </div>
 
-          {/* Logout */}
+      
           <div className="bg-[#0a1428] border border-[#1a2d4a] rounded-2xl p-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -218,7 +218,6 @@ const Settings = () => {
             </div>
           </div>
 
-          {/* Delete chats */}
           <div className="bg-[#0a1428] border border-red-500/20 rounded-2xl p-5 space-y-4">
             {[
               { label: "Delete all chat history", sub: "Permanently removes all your conversations" },
@@ -248,13 +247,13 @@ const Settings = () => {
   return (
     <div className="min-h-screen bg-[#03070f] text-white">
 
-      {/* Background */}
+ 
       <div className="fixed inset-0 pointer-events-none -z-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-500/4 blur-[120px] rounded-full" />
         <div className="absolute inset-0 opacity-[0.015] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      {/* Header */}
+
       <div className="relative z-10 border-b border-[#1a2d4a] bg-[#060d1a] px-4 sm:px-6 py-4 flex items-center gap-3">
         <button
           onClick={() => mobileTab ? setMobileTab(false) : navigate("/dashboard")}
@@ -276,7 +275,7 @@ const Settings = () => {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
-        {/* MOBILE: Tab list */}
+       
         <div className={`sm:hidden ${mobileTab ? "hidden" : "block"}`}>
           <h1 className="text-xl font-black text-white mb-5">Settings</h1>
           <div className="bg-[#060d1a] border border-[#1a2d4a] rounded-2xl overflow-hidden divide-y divide-[#1a2d4a]">
@@ -292,17 +291,17 @@ const Settings = () => {
             <button onClick={handleLogout} disabled={loggingOut}
               className="w-full flex items-center justify-between px-5 py-4 text-red-400 hover:bg-red-500/5 transition disabled:opacity-50">
               <div className="flex items-center gap-3"><FiLogOut size={15} /><span className="text-sm font-medium">{loggingOut ? "Logging out..." : "Logout"}</span></div>
-              <FiChevronRight size={14} className="text-slate-600" />
+              <FiChevronRight size={14} className="
+              text-slate-600" />
             </button>
           </div>
         </div>
 
-        {/* MOBILE: Content */}
         <div className={`sm:hidden ${mobileTab ? "block" : "hidden"}`}>
           {renderContent()}
         </div>
 
-        {/* DESKTOP: Side by side */}
+   
         <div className="hidden sm:flex gap-6 lg:gap-8">
           <aside className="w-48 flex-shrink-0 space-y-1">
             {tabs.map(({ id, label, icon: Icon }) => (

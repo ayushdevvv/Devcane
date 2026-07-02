@@ -32,7 +32,7 @@ const Sidebar = ({ open, onClose }) => {
       `}>
         <div className="w-64 h-full flex flex-col">
 
-          {/* Logo */}
+     
           <div className="px-5 pt-5 pb-4 border-b border-[#1a2d4a]">
             <Link to="/dashboard" className="flex items-center gap-2.5 mb-5">
               <div>
@@ -51,7 +51,6 @@ const Sidebar = ({ open, onClose }) => {
             </button>
           </div>
 
-          {/* Sessions */}
           <div className="flex-1 overflow-y-auto px-3 py-4">
             <p className="text-[10px] uppercase tracking-widest text-slate-600 px-2 mb-3 font-bold">
               Recent Chats
@@ -88,7 +87,6 @@ const Sidebar = ({ open, onClose }) => {
             )}
           </div>
 
-          {/* Back to Dashboard — bottom left */}
           <div className="px-3 pt-2">
             <Link
               to="/dashboard"
@@ -100,7 +98,7 @@ const Sidebar = ({ open, onClose }) => {
             </Link>
           </div>
 
-          {/* Footer */}
+     
           <div className="p-4 border-t border-[#1a2d4a] mt-2">
             <div className="bg-[#0a1428] border border-[#1a2d4a] rounded-xl p-3">
               <p className="text-xs font-bold text-white">Devcane Free</p>
