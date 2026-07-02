@@ -1,18 +1,25 @@
+import dotenv from "dotenv";
+import apiInstance from "../../config/brevo.js";
 
-
-import transporter from "../../config/nodemailer.js";
+dotenv.config();
 
 export const sendMail = async ({ to, subject, html }) => {
   try {
-    await transporter.sendMail({
-      from: `"DEVCANE" <${process.env.EMAIL_USER}>`,
-      to,
+    await apiInstance.sendTransacEmail({
+      sender: {
+        name: "DEVCANE",
+        email: process.env.EMAIL_FROM,
+      },
+      to: [{ email: to }],
       subject,
-      html,
+      htmlContent: html,
     });
 
     console.log(`📧 Email sent to ${to}`);
   } catch (error) {
-    console.log("❌ Email send error:", error);
+    console.error(
+      "❌ Brevo Email Error:",
+      error.response?.body || error.message || error
+    );
   }
 };
