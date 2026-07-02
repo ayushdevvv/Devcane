@@ -32,10 +32,19 @@ app.use(passport.initialize());
 
 app.use(generalLimiter);
 
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Devcane API is healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Devcane Backend Running 🚀",
+    message: "Devcane Backend Running ",
   });
 });
 
