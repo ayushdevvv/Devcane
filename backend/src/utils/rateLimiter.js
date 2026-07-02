@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit";
 
-// ─── Global Rate Limit (all routes) ───────────────────────────────
+
 export const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
@@ -12,7 +12,6 @@ export const generalLimiter = rateLimit({
   },
 });
 
-// ─── Chat Rate Limit (POST /api/chat only) ─────────────────────────
 export const chatLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 20,

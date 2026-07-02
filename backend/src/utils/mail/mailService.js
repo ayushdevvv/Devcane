@@ -6,7 +6,7 @@ import {
   loginAlertTemplate,
 } from "./mailTemplate.js";
 
-// ✅ Welcome Email
+
 export const sendWelcomeEmail = async (to, name) => {
   await sendMail({
     to,
