@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = new OpenAI({
-  apiKey: process.env.ASSISTANT_API_KEY,
+  apiKey: process.env.CHAT_API_KEY,
   baseURL: "https://api.groq.com/openai/v1",
 });
 
