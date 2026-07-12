@@ -24,9 +24,9 @@ const Navbar = ({ onMenuClick }) => {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-[#1a2d4a] bg-[#060d1a]/95 backdrop-blur-2xl">
-        <div className="max-w-[1500px] mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between">
+        <div className="w-full h-16 px-2 sm:px-3 lg:px-4 flex items-center justify-between">
 
-          {/* Left */}
+
           <div className="flex items-center gap-2.5 flex-shrink-0">
             <button
               onClick={onMenuClick}
@@ -42,7 +42,6 @@ const Navbar = ({ onMenuClick }) => {
             </Link>
           </div>
 
-          {/* Desktop */}
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
               <Link
@@ -82,7 +81,7 @@ const Navbar = ({ onMenuClick }) => {
             </div>
           )}
 
-          {/* Mobile */}
+
           <div className="sm:hidden flex items-center gap-2">
             {user ? (
               <button
