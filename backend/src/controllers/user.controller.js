@@ -2,7 +2,7 @@ import { userModel } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { blacklistModel } from "../models/blacklist.model.js";
-import { sendToken } from "../utils/sendToken.js";
+import { sendToken } from "../utils/token/sendToken.js";
 import {
   sendWelcomeEmail,
   sendLoginAlertEmail,

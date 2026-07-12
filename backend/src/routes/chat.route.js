@@ -6,8 +6,8 @@ import {
   deleteChatSession,
   getQuota
 } from "../controllers/chat.controller.js";
-import { chatLimiter } from "../utils/rateLimiter.js";
-import { authUser } from "../middleware/auth.middleware.js";
+import { chatLimiter } from "../utils/usage/rateLimiter.js";
+import { authUser } from "../middlewares/auth.middleware.js";
 
 const chatRouter = express.Router();
 

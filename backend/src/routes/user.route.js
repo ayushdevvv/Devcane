@@ -12,7 +12,7 @@ import {
   updateProfile,
 } from "../controllers/user.controller.js";
 
-import { authUser } from "../middleware/auth.middleware.js";
+import { authUser } from "../middlewares/auth.middleware.js";
 
 const authRouter = express.Router();
 

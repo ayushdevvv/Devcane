@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
+    resumeAnalysisCount: {
+      type: Number,
+      default: 0,
+    },
+
 
     messageCount: {
       type: Number,

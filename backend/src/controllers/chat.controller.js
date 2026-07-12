@@ -1,6 +1,9 @@
-import { generateChatResponse } from "../services/chat.service.js";
 import Chat from "../models/chat.model.js";
-import { checkAndConsumeQuota, getQuotaStatus } from "../utils/quota.util.js";
+import { generateChatResponse } from "../services/assistant/chat.service.js";
+import {
+  checkAndConsumeQuota,
+  getQuotaStatus,
+} from "../utils/usage/quota.util.js";
 
 export const chat = async (req, res) => {
   try {
@@ -13,19 +16,14 @@ export const chat = async (req, res) => {
       });
     }
 
-   
-    const quota = await checkAndConsumeQuota(req.user);
+    
+    const quota = getQuotaStatus(req.user);
 
-    if (!quota.allowed) {
+    if (quota.remaining <= 0) {
       return res.status(429).json({
         success: false,
         message: "Today's quota completed. Please come back tomorrow!",
-        quota: {
-          used: quota.limit,
-          remaining: 0,
-          limit: quota.limit,
-          resetAt: quota.resetAt,
-        },
+        quota,
       });
     }
 
@@ -51,7 +49,11 @@ export const chat = async (req, res) => {
       content: msg.content,
     }));
 
+    
     const aiResponse = await generateChatResponse(prompt, history);
+
+ 
+    const updatedQuota = await checkAndConsumeQuota(req.user);
 
     chatSession.messages.push({
       role: "user",
@@ -71,10 +73,10 @@ export const chat = async (req, res) => {
       title: chatSession.title,
       response: aiResponse,
       quota: {
-        used: quota.limit - quota.remaining,
-        remaining: quota.remaining,
-        limit: quota.limit,
-        resetAt: quota.resetAt,
+        used: updatedQuota.limit - updatedQuota.remaining,
+        remaining: updatedQuota.remaining,
+        limit: updatedQuota.limit,
+        resetAt: updatedQuota.resetAt,
       },
     });
   } catch (error) {
@@ -86,7 +88,6 @@ export const chat = async (req, res) => {
     });
   }
 };
-
 
 export const getQuota = async (req, res) => {
   try {
