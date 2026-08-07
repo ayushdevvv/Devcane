@@ -2,6 +2,7 @@ import { CheckCircle2, XCircle, ListChecks } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const KeywordCard = ({ matched = [], missing = [] }) => (
   <Card>
     <CardHeader icon={ListChecks} tone="blue" title="Keyword Analysis" className="mb-5" />

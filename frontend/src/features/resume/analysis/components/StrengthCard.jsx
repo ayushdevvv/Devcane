@@ -2,6 +2,7 @@ import { CheckCircle2 } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const StrengthCard = ({ strengths = [] }) => (
   <Card>
     <CardHeader icon={CheckCircle2} tone="green" title="Strengths" />

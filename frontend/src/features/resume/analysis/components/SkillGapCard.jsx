@@ -2,6 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const severity = {
   low: "text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/20",
   medium: "text-orange-400 bg-orange-500/10 border-orange-500/20",

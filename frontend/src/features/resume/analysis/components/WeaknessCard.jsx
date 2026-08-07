@@ -2,6 +2,7 @@ import { CircleAlert } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const WeaknessCard = ({ weaknesses = [] }) => (
   <Card>
     <CardHeader icon={CircleAlert} tone="red" title="Weaknesses" />

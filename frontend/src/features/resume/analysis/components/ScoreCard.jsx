@@ -31,7 +31,7 @@ const ScoreCard = ({ score }) => {
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
 
-        {/* Left */}
+       
         <div className="flex-1 w-full">
 
           <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 font-bold">
@@ -62,14 +62,10 @@ const ScoreCard = ({ score }) => {
             {label}
           </span>
 
-          <p className="mt-5 text-sm text-slate-500 leading-6 max-w-md">
-            ATS compatibility calculated using keyword relevance, formatting,
-            readability and recruiter expectations.
-          </p>
 
         </div>
 
-        {/* Circular Score */}
+     
         <div className="relative h-36 w-36 flex-shrink-0">
 
           <svg

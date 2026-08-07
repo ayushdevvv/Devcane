@@ -2,6 +2,7 @@ import { FileText } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const SummaryCard = ({ summary }) => (
   <Card>
     <CardHeader icon={FileText} tone="blue" title="Professional Summary" />

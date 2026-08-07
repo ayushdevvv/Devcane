@@ -2,6 +2,7 @@ import { Lightbulb } from "lucide-react";
 import Card from "../../shared/components/Card";
 import CardHeader from "../../shared/components/CardHeader";
 
+
 const ATSRecommendationCard = ({ tips = [] }) => (
   <Card>
     <CardHeader icon={Lightbulb} tone="amber" title="ATS Recommendations" />
