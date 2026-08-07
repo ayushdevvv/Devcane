@@ -43,15 +43,14 @@ export const ResumeGenerateProvider = ({ children }) => {
   const [resumeList, setResumeList] = useState([]);
   const [quota, setQuota] = useState(null);
   
-    const fetchQuota = useCallback(async () => {
-      try {
-        const quota = await getResumeQuota();
-        setQuota(quota);
-      } catch (err) {
-        console.log(err);
-      }
-    }, []);
-  
+  const fetchQuota = useCallback(async () => {
+  try {
+    const quota = await apiGetResumeQuota();
+    setQuota(quota);
+  } catch (err) {
+    console.log(err);
+  }
+}, []);
     useEffect(() => {
       fetchQuota();
     }, [fetchQuota]);
