@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { blacklistModel } from "../models/blacklist.model.js";
-import { userModel } from "../models/user.model.js";
+import { blacklistModel } from "../models/auth/blacklist.model.js";
+import { userModel } from "../models/auth/user.model.js";
 
 export const authUser = async (req, res, next) => {
   try {

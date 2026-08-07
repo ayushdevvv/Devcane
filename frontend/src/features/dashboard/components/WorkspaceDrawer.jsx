@@ -26,7 +26,8 @@ const products = [
     title: "Resume Builder",
     desc: "Build professional resumes with AI",
     icon: FiFileText,
-    live: false,
+    live: true,
+    href: "/resume-generate",
   },
 ];
 
@@ -44,7 +45,7 @@ const WorkspaceDrawer = ({ open, onClose }) => (
         open ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      {/* Header */}
+   
 
       <div className="flex items-center justify-between px-5 sm:px-7 h-16 sm:h-20 border-b border-[#1a2d4a] flex-shrink-0">
         <Link to="/" onClick={onClose} className="flex items-center gap-3">
@@ -70,7 +71,7 @@ const WorkspaceDrawer = ({ open, onClose }) => (
         </button>
       </div>
 
-      {/* Workspace */}
+      
 
       <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6">
         <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-4 font-bold">
@@ -126,7 +127,7 @@ const WorkspaceDrawer = ({ open, onClose }) => (
 
         <div className="my-6 border-t border-[#1a2d4a]" />
 
-        {/* Resources */}
+ 
 
         <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-3 font-bold">
           Resources
@@ -154,10 +155,10 @@ const WorkspaceDrawer = ({ open, onClose }) => (
 
       <div className="p-5 sm:p-6 border-t border-[#1a2d4a] flex-shrink-0">
         <div className="rounded-2xl border border-[#22c55e]/15 bg-gradient-to-br from-[#22c55e]/10 to-transparent p-5">
-          <p className="text-white font-bold text-sm">Devcane v1.1</p>
+          <p className="text-white font-bold text-sm">Devcane v1.2</p>
 
           <p className="mt-2 text-xs text-slate-500 leading-5">
-            AI Assistant and Resume Analyzer are now live. More AI-powered
+            More AI-powered
             developer tools are coming soon.
           </p>
         </div>

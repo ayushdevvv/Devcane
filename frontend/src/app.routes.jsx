@@ -11,8 +11,11 @@ import Settings from "./features/dashboard/pages/Settings";
 import About from "./features/dashboard/pages/About";
 import ForgotPassword from "./features/auth/pages/ForgotPassword";
 import ResetPassword from "./features/auth/pages/ResetPassword";
-import ResumeUpload from "./features/resumeAnalysis/pages/ResumeUpload";
-import ResumeAnalysis from "./features/resumeAnalysis/pages/ResumeAnalysis";
+import ResumeUpload from "./features/resume/analysis/pages/Upload";
+import ResumeAnalysis from "./features/resume/analysis/pages/Analysis";
+import ResumeGenerateStart from "./features/resume/generate/pages/Start";
+import ResumeGenerateBuild from "./features/resume/generate/pages/Build";
+import ResumeGenerateResult from "./features/resume/generate/pages/Result";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -22,9 +25,12 @@ export const router = createBrowserRouter([
   { path: "/about", element: <About /> },
   { path: "/settings", element: <ProtectedRoute><Settings /></ProtectedRoute> },
   { path: "/chat", element: <ProtectedRoute><Chat /></ProtectedRoute> },
-  { path: "/forgot-password", element: (  <GuestRoute><ForgotPassword /></GuestRoute>  ),},
-  { path: "/reset-password/:token",  element: ( <GuestRoute><ResetPassword /></GuestRoute> ), },
-  { path:"/resume-analysis",element:<ProtectedRoute><ResumeUpload/></ProtectedRoute>},
-  {path:"/resume-analysis/:id",element:<ProtectedRoute><ResumeAnalysis/></ProtectedRoute>},
-  { path: "*", element: <Navigate to="/" replace /> }, 
+  { path: "/forgot-password", element: (<GuestRoute><ForgotPassword /></GuestRoute>) },
+  { path: "/reset-password/:token", element: (<GuestRoute><ResetPassword /></GuestRoute>) },
+  { path: "/resume-analysis", element: <ProtectedRoute><ResumeUpload /></ProtectedRoute> },
+  { path: "/resume-analysis/:id", element: <ProtectedRoute><ResumeAnalysis /></ProtectedRoute> },
+  { path: "/resume-generate", element: <ProtectedRoute><ResumeGenerateStart /></ProtectedRoute> },
+  { path: "/resume-generate/build", element: <ProtectedRoute><ResumeGenerateBuild /></ProtectedRoute> },
+  { path: "/resume-generate/:id", element: <ProtectedRoute><ResumeGenerateResult /></ProtectedRoute> },
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);

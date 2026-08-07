@@ -25,25 +25,19 @@ const Hero = ({ user }) => (
         </span>
       </h1>
 
-
-      <p className="mt-6 sm:mt-8 text-slate-400 text-base sm:text-lg leading-7 sm:leading-8 max-w-2xl">
-        Build, debug, review and learn from one intelligent platform. Devcane combines an AI Assistant, Resume Analyzer into one premium workspace.
-      </p>
-
-
     <div className="mt-8 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
   <Link
     to={user ? "/dashboard" : "/register"}
     className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#22c55e] to-[#16a34a] hover:from-[#16a34a] hover:to-[#15803d] px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold text-white shadow-xl shadow-[#22c55e]/20 hover:shadow-[#22c55e]/30 hover:scale-[1.02] transition-all duration-300"
   >
-    Build with AI
+    Analyze Resume
   </Link>
 
   <Link
     to={user ? "/resume-analysis" : "/register"}
     className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold text-white shadow-lg shadow-blue-900/30 hover:scale-[1.02] transition-all duration-300"
   >
-    Upload Resume
+    Generate Resume
   </Link>
 </div>
 
@@ -51,15 +45,15 @@ const Hero = ({ user }) => (
         {[
           { number: "1", label: "AI Assistant" },
           { number: "1", label: "Resume Analyzer" },
+          { number: "1", label: "Resume Builder" },
           { number: "24/7", label: "Available" },
-          { number: "∞", label: "Possibilities" },
         ].map(({ number, label }) => (
           <div key={label} className="rounded-2xl sm:rounded-3xl border border-[#1a2d4a] bg-[#060d1a]/70 backdrop-blur-xl p-4 sm:p-6 hover:border-[#22c55e]/20 transition-all">
             <h2 className="text-2xl sm:text-3xl font-black text-white">{number}</h2>
             <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-slate-500">{label}</p>
           </div>
         ))}
-      </div>
+      </div> 
     </div>
   </section>
 );

@@ -136,7 +136,7 @@ const Navbar = ({ onMenuClick }) => {
 
           <div className="px-3 py-2">
             <Link
-              to="/chat"
+              to="/dashboard"
               onClick={() => setMobileMenu(false)}
               className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-white font-semibold bg-gradient-to-r from-blue-600/20 to-blue-500/10 border border-blue-500/20 mb-2 text-sm"
             >

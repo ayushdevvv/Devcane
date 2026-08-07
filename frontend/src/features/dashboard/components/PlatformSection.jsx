@@ -26,10 +26,10 @@ const products = [
   {
     icon: FiFilePlus,
     title: "Resume Builder",
-    badge: "COMING SOON",
+    badge: "LIVE",
     color: "green",
     desc: "Build a professional resume from scratch with AI-powered suggestions.",
-    link: "#",
+    link: "/resume-generate",
   },
 ];
 

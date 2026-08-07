@@ -24,7 +24,8 @@ const Footer = () => (
           <div className="space-y-2.5 sm:space-y-3 text-slate-500 text-sm">
             <Link to="/chat" className="block hover:text-[#22c55e] transition">AI Assistant</Link>
             <Link to="/resume-analysis" className="block hover:text-[#22c55e] transition">Resume Analyzer</Link>
-            <span className="block opacity-50 cursor-not-allowed">Resume Builder</span>
+            <Link to="/resume-generate" className="block hover:text-[#22c55e] transition">Resume Builder</Link>
+            
           </div>
         </div>
 

@@ -5,10 +5,11 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import passport from "passport";
 import "../config/passport.js";
-import resumeAnalysisRouter from "../routes/resumeAnalysis.route.js";
-import chatRouter from "../routes/chat.route.js";
-import authRouter from "../routes/user.route.js";
+import chatRouter from "../routes/assistant/chat.route.js";
+import authRouter from "../routes/auth/user.route.js";
 import { generalLimiter } from "../utils/usage/rateLimiter.js";
+import generateRouter from "../routes/resume/generate.route.js";
+import AnalysisRouter from "../routes/resume/Analysis.route.js";
 
 dotenv.config();
 
@@ -51,7 +52,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
-app.use("/api/resume-analysis", resumeAnalysisRouter);
+app.use("/api/resume/analysis", AnalysisRouter);
+app.use("/api/resume/generate", generateRouter);
 
 app.use((req, res) => {
   res.status(404).json({

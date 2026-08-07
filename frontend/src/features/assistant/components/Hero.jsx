@@ -28,12 +28,10 @@ const Hero = () => {
      
         <div className={`flex flex-col items-center text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
          
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-3xl font-black tracking-tight text-white">
            Lets Build Together With <span className="text-[#f59e0b]">AI</span>
           </h1>
-          <p className="mt-3 text-slate-500 text-[14px] sm:text-[15px] max-w-md">
-            Your AI software engineer — generate, debug, review, and explain code.
-          </p>
+      
         </div>
 
        
