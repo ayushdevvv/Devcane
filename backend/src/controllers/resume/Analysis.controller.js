@@ -84,10 +84,14 @@ export const uploadResume = async (req, res) => {
 
 export const generateAnalysis = async (req, res) => {
     try {
+        console.log("🔵 ANALYSIS START:", req.params.id);
+
         const resume = await ResumeAnalysis.findOne({
             _id: req.params.id,
             user: req.user._id
         });
+
+        console.log("🟢 RESUME FOUND:", !!resume);
 
         if (!resume) {
             return res.status(404).json({
@@ -110,8 +114,9 @@ export const generateAnalysis = async (req, res) => {
             });
         }
 
-        // Check daily quota
         const quota = getResumeQuotaStatus(req.user);
+
+        console.log("🟢 QUOTA:", quota);
 
         if (quota.remaining <= 0) {
             return res.status(429).json({
@@ -120,6 +125,11 @@ export const generateAnalysis = async (req, res) => {
                 quota
             });
         }
+
+        console.log(
+            "🟢 EXTRACTED TEXT LENGTH:",
+            resume.extractedText?.length
+        );
 
         if (!resume.extractedText?.trim()) {
             resume.status = "failed";
@@ -134,7 +144,10 @@ export const generateAnalysis = async (req, res) => {
         resume.status = "analyzing";
         await resume.save();
 
-        const jobDescription = req.body?.jobDescription?.trim() || "";
+        console.log("🟡 CALLING AI...");
+
+        const jobDescription =
+            req.body?.jobDescription?.trim() || "";
 
         const result = await analyzeResume(
             resume.extractedText,
@@ -142,21 +155,31 @@ export const generateAnalysis = async (req, res) => {
             resume.prompt
         );
 
+        console.log("🟢 AI ANALYSIS SUCCESS");
+
         Object.assign(resume, result);
         resume.status = "completed";
 
         let pdfPath = "";
 
         try {
+            console.log("🟡 GENERATING REPORT PDF...");
+
             pdfPath = await generateReportPdf(
                 resume.toObject(),
                 `analysis-${resume._id}`
             );
 
+            console.log("🟢 PDF GENERATED:", pdfPath);
+
+            console.log("🟡 UPLOADING PDF TO CLOUDINARY...");
+
             const uploaded = await uploadPdfToCloudinary(
                 pdfPath,
                 "devcane/resume-analysis"
             );
+
+            console.log("🟢 CLOUDINARY UPLOAD SUCCESS:", uploaded);
 
             resume.generatedReport = {
                 url: uploaded.url,
@@ -167,10 +190,16 @@ export const generateAnalysis = async (req, res) => {
             cleanupFile(pdfPath);
         }
 
+        console.log("🟡 SAVING ANALYSIS...");
+
         await resume.save();
 
-        // Consume quota only after successful analysis
-        const updatedQuota = await checkAndConsumeResumeQuota(req.user);
+        console.log("🟢 ANALYSIS SAVED");
+
+        const updatedQuota =
+            await checkAndConsumeResumeQuota(req.user);
+
+        console.log("🟢 QUOTA UPDATED:", updatedQuota);
 
         const response = resume.toObject();
         delete response.extractedText;
@@ -188,13 +217,18 @@ export const generateAnalysis = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("❌❌ RESUME ANALYSIS FAILED ❌❌");
+        console.error("MESSAGE:", err.message);
+        console.error("STACK:", err.stack);
 
         try {
-            await ResumeAnalysis.findByIdAndUpdate(req.params.id, {
-                status: "failed"
-            });
-        } catch {}
+            await ResumeAnalysis.findByIdAndUpdate(
+                req.params.id,
+                { status: "failed" }
+            );
+        } catch (dbErr) {
+            console.error("STATUS UPDATE FAILED:", dbErr.message);
+        }
 
         return res.status(500).json({
             success: false,
