@@ -60,7 +60,7 @@ const GenerateStart = () => {
           badge="AI Resume Builder"
           title="Build"
           highlight="Resume"
-       
+          subtitle="Import your existing resume to polish it instantly, or build a brand new one from scratch."
         />
 
         <QuotaBadge
