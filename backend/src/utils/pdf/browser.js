@@ -1,14 +1,20 @@
 import puppeteer from 'puppeteer';
 import { execSync } from 'child_process';
-import path from 'path';
 
 function resolveChromePath() {
-  if (!process.env.RENDER) return undefined;
+  if (!process.env.RENDER) return undefined; // local dev, use puppeteer's default
 
   try {
     const baseDir = '/opt/render/project/.render/chrome';
-    const versionFolder = execSync(`ls ${baseDir}`).toString().trim().split('\n')[0];
-    return path.join(baseDir, versionFolder, 'chrome-linux64/chrome');
+    const result = execSync(`find ${baseDir} -type f -name chrome -perm -u+x`)
+      .toString()
+      .trim();
+    const chromePath = result.split('\n')[0];
+
+    if (!chromePath) {
+      throw new Error(`No chrome binary found under ${baseDir}`);
+    }
+    return chromePath;
   } catch (err) {
     console.error('⚠️ Could not resolve Chrome path, falling back to default:', err.message);
     return undefined;
