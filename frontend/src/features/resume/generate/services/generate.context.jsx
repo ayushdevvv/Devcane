@@ -151,7 +151,6 @@ const submitScratch = async () => {
     setLoading(false);
   }
 };
-
 const submitImport = async (file) => {
   if (quota && quota.remaining <= 0) {
     toast.error("Today's resume generation limit is over.");
@@ -164,7 +163,7 @@ const submitImport = async (file) => {
     const uploadPayload = new FormData();
     uploadPayload.append("resume", file);
 
-    const uploaded = await uploadResumeForBuild(uploadPayload);
+    const uploaded = await apiUploadResumeForBuild(uploadPayload); // ← fixed
 
     const built = await apiBuildResume({
       mode: "import",
@@ -193,7 +192,6 @@ const submitImport = async (file) => {
     setLoading(false);
   }
 };
-
   const getResume = useCallback(async (id) => {
     setLoading(true);
     try {

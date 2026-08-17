@@ -96,7 +96,6 @@ export const buildResume = async (req, res) => {
 
 const buildImportedResume = async (req, res) => {
     const { resumeId } = req.body;
-    console.log("🔵 BUILD START (import):", resumeId);
 
     const resume = await ResumeGenerate.findOne({
         _id: resumeId,
@@ -104,7 +103,6 @@ const buildImportedResume = async (req, res) => {
     });
 
     if (!resume) {
-        console.log("❌ RESUME NOT FOUND:", resumeId);
         return res.status(404).json({
             success: false,
             message: "Resume not found."
@@ -112,7 +110,6 @@ const buildImportedResume = async (req, res) => {
     }
 
     if (resume.status === "completed") {
-        console.log("🟡 ALREADY COMPLETED:", resumeId);
         return res.status(400).json({
             success: false,
             message: "Resume already generated."
@@ -120,18 +117,16 @@ const buildImportedResume = async (req, res) => {
     }
 
     if (resume.status === "building") {
-        console.log("🟡 ALREADY BUILDING:", resumeId);
         return res.status(400).json({
             success: false,
             message: "Resume generation already running."
         });
     }
 
+    // Check daily quota
     const quota = getResumeQuotaStatus(req.user);
-    console.log("🟢 QUOTA:", quota);
 
     if (quota.remaining <= 0) {
-        console.log("❌ QUOTA EXHAUSTED");
         return res.status(429).json({
             success: false,
             message: "Today's resume generation quota has been exhausted.",
@@ -140,7 +135,6 @@ const buildImportedResume = async (req, res) => {
     }
 
     if (!resume.extractedText?.trim()) {
-        console.log("❌ NO EXTRACTED TEXT");
         return res.status(400).json({
             success: false,
             message: "Unable to extract text from the uploaded resume."
@@ -149,35 +143,28 @@ const buildImportedResume = async (req, res) => {
 
     resume.status = "building";
     await resume.save();
-    console.log("🟢 STATUS SET TO BUILDING");
 
     let pdfPath = "";
 
     try {
-        console.log("🟡 CALLING generateResume...");
         const resumeData = await generateResume({
             mode: "import",
             data: resume.extractedText
         });
-        console.log("🟢 generateResume SUCCESS:", JSON.stringify(resumeData)?.slice(0, 500));
 
         Object.assign(resume, resumeData);
-        await resume.save();
-        console.log("🟢 RESUME SAVED WITH DATA");
 
-        console.log("🟡 GENERATING PDF...");
+        await resume.save();
+
         pdfPath = await generateResumePdf(
             resume.toObject(),
             `resume-${resume._id}`
         );
-        console.log("🟢 PDF GENERATED AT:", pdfPath);
 
-        console.log("🟡 UPLOADING TO CLOUDINARY...");
         const uploaded = await uploadPdfToCloudinary(
             pdfPath,
             "devcane/resume-generator"
         );
-        console.log("🟢 UPLOADED:", uploaded.url);
 
         resume.generatedResume = {
             url: uploaded.url,
@@ -185,12 +172,11 @@ const buildImportedResume = async (req, res) => {
         };
 
         resume.status = "completed";
+
         await resume.save();
-        console.log("🟢 RESUME MARKED COMPLETED");
 
+        // Consume quota only after successful generation
         const updatedQuota = await checkAndConsumeResumeQuota(req.user);
-
-        console.log("🟢 BUILD SUCCESS:", resumeId);
 
         return res.status(200).json({
             success: true,
@@ -205,9 +191,6 @@ const buildImportedResume = async (req, res) => {
         });
 
     } catch (err) {
-        console.log("❌❌ BUILD FAILED ❌❌");
-        console.log("MESSAGE:", err.message);
-        console.log("STACK:", err.stack);
         resume.status = "failed";
         await resume.save();
         throw err;
