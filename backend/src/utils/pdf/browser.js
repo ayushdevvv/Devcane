@@ -26,13 +26,32 @@ const CHROME_PATH = resolveChromePath();
 let browserInstance = null;
 
 export async function getBrowser() {
-  if (browserInstance && browserInstance.isConnected()) {
-    return browserInstance;
+  if (browserInstance) {
+    try {
+      if (browserInstance.connected) {
+        return browserInstance;
+      }
+    } catch {
+      // fall through to relaunch
+    }
   }
+
   browserInstance = await puppeteer.launch({
     executablePath: CHROME_PATH,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',   // important on low-memory containers
+      '--disable-gpu',
+      '--single-process',           // reduces memory footprint significantly
+    ],
   });
+
+  browserInstance.on('disconnected', () => {
+    console.log("🔴 Browser disconnected, will relaunch on next request");
+    browserInstance = null;
+  });
+
   return browserInstance;
 }
 
