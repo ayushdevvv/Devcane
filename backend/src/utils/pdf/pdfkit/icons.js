@@ -1,5 +1,4 @@
-// Small monochrome vector icons drawn directly with PDFKit primitives.
-// Each function draws inside a box of `size` starting at (x, y).
+// src/utils/pdf/pdfKit/icons.js
 
 export const drawMailIcon = (doc, x, y, size, color) => {
   doc.save();
@@ -31,21 +30,34 @@ export const drawLocationIcon = (doc, x, y, size, color) => {
   doc.restore();
 };
 
+// These two draw text glyphs for the icon (letters), so font state leaks — save/restore it manually.
 export const drawLinkedInIcon = (doc, x, y, size, color) => {
+  const prevFont = doc._font;
+  const prevSize = doc._fontSize;
+
   doc.save();
   doc.roundedRect(x, y, size, size, size * 0.15).lineWidth(0.9).strokeColor(color).stroke();
   doc.font("Helvetica-Bold").fontSize(size * 0.55).fillColor(color)
      .text("in", x, y + size * 0.2, { width: size, align: "center" });
   doc.restore();
+
+  if (prevFont) doc.font(prevFont);
+  if (Number.isFinite(prevSize)) doc.fontSize(prevSize);
 };
 
 export const drawGithubIcon = (doc, x, y, size, color) => {
+  const prevFont = doc._font;
+  const prevSize = doc._fontSize;
+
   doc.save();
   const cx = x + size / 2, cy = y + size / 2, r = size / 2;
   doc.circle(cx, cy, r).lineWidth(0.9).strokeColor(color).stroke();
   doc.font("Helvetica-Bold").fontSize(size * 0.42).fillColor(color)
      .text("</>", x, y + size * 0.28, { width: size, align: "center" });
   doc.restore();
+
+  if (prevFont) doc.font(prevFont);
+  if (Number.isFinite(prevSize)) doc.fontSize(prevSize);
 };
 
 export const drawLinkIcon = (doc, x, y, size, color) => {
