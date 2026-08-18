@@ -275,86 +275,318 @@ function sectionBlock(doc, title, x, y, width, sizes, drawBody) {
 }
 
 function drawExperienceItem(doc, exp, x, y, width, sizes, lineGap) {
-  doc.font(fonts.bold).fontSize(sizes.itemTitle).fillColor(colors.text).text(String(exp.role || ""), x, y, { width });
-  y = doc.y;
+  if (
+    !Number.isFinite(x) ||
+    !Number.isFinite(y) ||
+    !Number.isFinite(width)
+  ) {
+    console.error("Invalid experience layout:", {
+      x,
+      y,
+      width,
+      exp,
+    });
 
-  const metaLine = [
-    exp.company,
-    formatRange(exp.startDate, exp.endDate, exp.current),
-    exp.location
-  ].filter(Boolean).join("   •   ");
-
-  if (metaLine) {
-    doc.font(fonts.regular).fontSize(sizes.itemMeta).fillColor(colors.muted).text(String(metaLine), x, y, { width });
-    y = doc.y + 2;
+    return Number.isFinite(y) ? y : 0;
   }
 
-  const bullets = safeArray(exp.description).map(String).filter(Boolean);
+  doc
+    .font(fonts.bold)
+    .fontSize(sizes.itemTitle)
+    .fillColor(colors.text)
+    .text(String(exp?.role || ""), x, y, {
+      width,
+    });
+
+  y = Number.isFinite(doc.y) ? doc.y : y;
+
+  const metaLine = [
+    exp?.company,
+    formatRange(
+      exp?.startDate,
+      exp?.endDate,
+      exp?.current
+    ),
+    exp?.location,
+  ]
+    .filter(Boolean)
+    .join("   •   ");
+
+  if (metaLine) {
+    doc
+      .font(fonts.regular)
+      .fontSize(sizes.itemMeta)
+      .fillColor(colors.muted)
+      .text(String(metaLine), x, y, {
+        width,
+      });
+
+    y = Number.isFinite(doc.y) ? doc.y + 2 : y + 2;
+  }
+
+  const bullets = safeArray(exp?.description)
+    .map((item) => String(item || "").trim())
+    .filter(Boolean);
 
   if (bullets.length) {
-    doc.font(fonts.regular).fontSize(sizes.body).fillColor(colors.subtitle);
-    doc.list(bullets, x, y, { width, bulletRadius: 1.3, textIndent: 10, lineGap });
-    y = doc.y;
+    y = drawBulletList(
+      doc,
+      bullets,
+      x,
+      y,
+      width,
+      sizes.body,
+      lineGap
+    );
   }
 
   doc.fillColor(colors.text);
-  return y;
+
+  return Number.isFinite(y) ? y : doc.y;
 }
-
 function drawProjectItem(doc, project, x, y, width, sizes, lineGap) {
-  doc.font(fonts.bold).fontSize(sizes.itemTitle).fillColor(colors.text).text(String(project.title || ""), x, y, { width });
-  y = doc.y;
+  // Safety guard
+  if (
+    !Number.isFinite(x) ||
+    !Number.isFinite(y) ||
+    !Number.isFinite(width) ||
+    !Number.isFinite(lineGap)
+  ) {
+    console.error("Invalid project layout:", {
+      x,
+      y,
+      width,
+      lineGap,
+      project,
+    });
 
-  if (Array.isArray(project.techStack) && project.techStack.length) {
-    doc.font(fonts.italic).fontSize(sizes.itemMeta).fillColor(colors.muted).text(joinItems(project.techStack, ", "), x, y, { width });
-    y = doc.y + 2;
+    return Number.isFinite(y) ? y : 0;
   }
 
+  const safeWidth = Math.max(1, width);
+
+  // -----------------------------
+  // Project title
+  // -----------------------------
+  const title = String(project?.title || "").trim();
+
+  if (title) {
+    doc
+      .font(fonts.bold)
+      .fontSize(sizes.itemTitle)
+      .fillColor(colors.text)
+      .text(title, x, y, {
+        width: safeWidth,
+      });
+
+    y = Number.isFinite(doc.y) ? doc.y : y;
+  }
+
+  // -----------------------------
+  // Tech stack
+  // -----------------------------
+  if (
+    Array.isArray(project?.techStack) &&
+    project.techStack.length
+  ) {
+    const techStack = joinItems(project.techStack, ", ");
+
+    if (techStack) {
+      doc
+        .font(fonts.italic)
+        .fontSize(sizes.itemMeta)
+        .fillColor(colors.muted)
+        .text(String(techStack), x, y, {
+          width: safeWidth,
+        });
+
+      y = Number.isFinite(doc.y) ? doc.y + 2 : y + 2;
+    }
+  }
+
+  // -----------------------------
+  // Project links
+  // -----------------------------
   const links = [];
 
-  if (project.github) {
-    const url = normalizeUrl(project.github, "https://github.com/");
-    if (url) links.push({ icon: "github", label: "GitHub", url });
+  if (project?.github) {
+    const url = normalizeUrl(
+      project.github,
+      "https://github.com/"
+    );
+
+    if (url) {
+      links.push({
+        icon: "github",
+        label: "GitHub",
+        url,
+      });
+    }
   }
 
-  if (project.live) {
+  if (project?.live) {
     const url = normalizeUrl(project.live);
-    if (url) links.push({ icon: "link", label: "Live Demo", url });
+
+    if (url) {
+      links.push({
+        icon: "link",
+        label: "Live Demo",
+        url,
+      });
+    }
   }
 
   if (links.length) {
-    const iconSize = sizes.itemMeta * 1.2;
+    const iconSize = Math.max(
+      1,
+      Number.isFinite(sizes.itemMeta)
+        ? sizes.itemMeta * 1.2
+        : 10
+    );
+
     let lx = x;
 
-    links.forEach(link => {
+    links.forEach((link) => {
       const drawIcon = ICON_MAP[link.icon];
 
-      if (drawIcon) drawIcon(doc, lx, y - 1, iconSize, colors.accent);
+      if (drawIcon) {
+        drawIcon(
+          doc,
+          lx,
+          y - 1,
+          iconSize,
+          colors.accent
+        );
+      }
 
       const textX = lx + iconSize + 3;
       const textY = y;
 
-      doc.font(fonts.regular).fontSize(sizes.itemMeta).fillColor(colors.accent).text(link.label, textX, textY, { underline: true, lineBreak: false });
+      if (
+        !Number.isFinite(textX) ||
+        !Number.isFinite(textY)
+      ) {
+        return;
+      }
 
-      const labelWidth = finite(doc.widthOfString(link.label));
-      safeLink(doc, textX, textY, labelWidth, sizes.itemMeta + 3, link.url);
+      doc
+        .font(fonts.regular)
+        .fontSize(sizes.itemMeta)
+        .fillColor(colors.accent)
+        .text(link.label, textX, textY, {
+          underline: true,
+          lineBreak: false,
+        });
 
-      lx = textX + labelWidth + 12;
+      const labelWidth = finite(
+        doc.widthOfString(link.label)
+      );
+
+      if (Number.isFinite(labelWidth)) {
+        safeLink(
+          doc,
+          textX,
+          textY,
+          labelWidth,
+          sizes.itemMeta + 3,
+          link.url
+        );
+
+        lx = textX + labelWidth + 12;
+      }
     });
 
     y += iconSize + 4;
+
+    if (!Number.isFinite(y)) {
+      y = Number.isFinite(doc.y) ? doc.y : y;
+    }
+
     doc.fillColor(colors.text);
   }
 
-  const bullets = safeArray(project.description).map(String).filter(Boolean);
+  // -----------------------------
+  // Description bullets
+  // -----------------------------
+  const bullets = safeArray(project?.description)
+    .map((item) => String(item || "").trim())
+    .filter(Boolean);
 
   if (bullets.length) {
-    doc.font(fonts.regular).fontSize(sizes.body).fillColor(colors.subtitle);
-    doc.list(bullets, x, y, { width, bulletRadius: 1.3, textIndent: 10, lineGap });
-    y = doc.y;
+    y = drawBulletList(
+      doc,
+      bullets,
+      x,
+      y,
+      safeWidth,
+      sizes.body,
+      lineGap
+    );
   }
 
   doc.fillColor(colors.text);
+
+  return Number.isFinite(y) ? y : doc.y;
+}
+
+function drawBulletList(
+  doc,
+  bullets,
+  x,
+  y,
+  width,
+  fontSize,
+  lineGap = 1.1
+) {
+  if (
+    !Number.isFinite(x) ||
+    !Number.isFinite(y) ||
+    !Number.isFinite(width) ||
+    !Number.isFinite(fontSize)
+  ) {
+    console.error("Invalid bullet list layout:", {
+      x,
+      y,
+      width,
+      fontSize,
+      lineGap,
+    });
+
+    return Number.isFinite(y) ? y : 0;
+  }
+
+  const bulletSize = Math.max(1, fontSize * 0.16);
+  const bulletGap = 7;
+  const textX = x + 10;
+  const textWidth = Math.max(1, width - 10);
+
+  bullets.forEach((bullet) => {
+    if (!bullet) return;
+
+    // Bullet
+    doc
+      .circle(
+        x + 2.5,
+        y + fontSize * 0.42,
+        bulletSize
+      )
+      .fillColor(colors.subtitle)
+      .fill();
+
+    // Text
+    doc
+      .font(fonts.regular)
+      .fontSize(fontSize)
+      .fillColor(colors.subtitle)
+      .text(String(bullet), textX, y, {
+        width: textWidth,
+        lineGap: Number.isFinite(lineGap) ? lineGap : 1.1,
+      });
+
+    y = Number.isFinite(doc.y)
+      ? doc.y + 3
+      : y + fontSize + 3;
+  });
 
   return y;
 }
