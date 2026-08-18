@@ -15,36 +15,73 @@ export const ensureTempDir = () => {
   return dir;
 };
 
-// Renders into a throwaway document just to count how many pages it takes.
-// PDFKit auto-adds a page whenever content overflows, so counting
-// 'pageAdded' events tells us if a given font scale fits on one page.
-export const countPages = (renderFn, margin) =>
-  new Promise((resolve, reject) => {
-    try {
-      const doc = new PDFDocument({ size: "A4", margin, bufferPages: true, autoFirstPage: true });
-      let pages = 1;
-      doc.on("pageAdded", () => { pages += 1; });
-      doc.pipe(new NullWritable());
-      renderFn(doc);
-      doc.end();
-      doc.on("end", () => resolve(pages));
-      doc.on("error", reject);
-    } catch (err) {
-      reject(err);
-    }
-  });
+export const countPages = (renderFn, margin) => new Promise((resolve, reject) => {
+  let settled = false;
 
-export const writeToFile = (renderFn, filePath, margin) =>
-  new Promise((resolve, reject) => {
-    try {
-      const doc = new PDFDocument({ size: "A4", margin, bufferPages: true });
-      const stream = fs.createWriteStream(filePath);
-      doc.pipe(stream);
-      stream.on("finish", () => resolve(filePath));
-      stream.on("error", reject);
-      renderFn(doc);
-      doc.end();
-    } catch (err) {
-      reject(err);
-    }
-  });
+  const finish = (fn, value) => {
+    if (settled) return;
+    settled = true;
+    fn(value);
+  };
+
+  try {
+    const doc = new PDFDocument({
+      size: "A4",
+      margin,
+      bufferPages: true,
+      autoFirstPage: true
+    });
+
+    let pages = 1;
+
+    doc.on("pageAdded", () => {
+      pages += 1;
+    });
+
+    doc.on("error", err => finish(reject, err));
+
+    const output = new NullWritable();
+    output.on("error", err => finish(reject, err));
+
+    doc.pipe(output);
+
+    renderFn(doc);
+    doc.end();
+
+    doc.on("end", () => finish(resolve, pages));
+  } catch (err) {
+    finish(reject, err);
+  }
+});
+
+export const writeToFile = (renderFn, filePath, margin) => new Promise((resolve, reject) => {
+  let settled = false;
+
+  const finish = (fn, value) => {
+    if (settled) return;
+    settled = true;
+    fn(value);
+  };
+
+  try {
+    const doc = new PDFDocument({
+      size: "A4",
+      margin,
+      bufferPages: true,
+      autoFirstPage: true
+    });
+
+    const stream = fs.createWriteStream(filePath);
+
+    doc.on("error", err => finish(reject, err));
+    stream.on("error", err => finish(reject, err));
+    stream.on("finish", () => finish(resolve, filePath));
+
+    doc.pipe(stream);
+
+    renderFn(doc);
+    doc.end();
+  } catch (err) {
+    finish(reject, err);
+  }
+});
