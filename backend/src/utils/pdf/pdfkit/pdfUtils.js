@@ -18,3 +18,11 @@ export const normalizeUrl = (value, prefix) => {
   if (v.startsWith("http://") || v.startsWith("https://")) return v;
   return prefix ? `${prefix}${v}` : `https://${v}`;
 };
+
+export const nonEmpty = (arr, checkFields) =>
+  safeArray(arr).filter((item) =>
+    checkFields.some((f) => {
+      const v = item?.[f];
+      return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
+    })
+  );
