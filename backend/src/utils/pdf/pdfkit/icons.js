@@ -1,5 +1,3 @@
-// src/utils/pdf/pdfKit/icons.js
-
 export const drawMailIcon = (doc, x, y, size, color) => {
   doc.save();
   doc.rect(x, y + size * 0.15, size, size * 0.7).lineWidth(0.9).strokeColor(color).stroke();
@@ -30,7 +28,11 @@ export const drawLocationIcon = (doc, x, y, size, color) => {
   doc.restore();
 };
 
-// These two draw text glyphs for the icon (letters), so font state leaks — save/restore it manually.
+// These draw text glyphs, so font state leaks past doc.restore() (PDFKit does
+// not track font/fontSize as part of the graphics-state stack). Must be
+// manually captured and restored, or every subsequent .text() call in the
+// same row silently keeps using this tiny leftover font size — which is what
+// was producing the "unsupported number: NaN" crash in the resume builder.
 export const drawLinkedInIcon = (doc, x, y, size, color) => {
   const prevFont = doc._font;
   const prevSize = doc._fontSize;
