@@ -26,29 +26,26 @@ export const drawLocationIcon = (doc, x, y, size, color) => {
 
 export const drawLinkedInIcon = (doc, x, y, size, color) => {
   if (![x, y, size].every(Number.isFinite)) return;
-  const prevFont = doc._font;
-  const prevSize = doc._fontSize;
   doc.save();
   doc.roundedRect(x, y, size, size, size * 0.15).lineWidth(0.9).strokeColor(color).stroke();
-  doc.font("Helvetica-Bold").fontSize(size * 0.55).fillColor(color).text("in", x, y + size * 0.2, { width: size, align: "center", lineBreak: false });
+  doc.circle(x + size * 0.32, y + size * 0.3, size * 0.055).fillColor(color).fill();
+  doc.rect(x + size * 0.265, y + size * 0.42, size * 0.11, size * 0.32).fillColor(color).fill();
+  doc.lineWidth(size * 0.1).strokeColor(color).moveTo(x + size * 0.55, y + size * 0.47).lineTo(x + size * 0.55, y + size * 0.74).stroke();
+  doc.lineWidth(size * 0.1).strokeColor(color).moveTo(x + size * 0.55, y + size * 0.57).lineTo(x + size * 0.72, y + size * 0.57).stroke();
   doc.restore();
-  if (prevFont) doc.font(prevFont);
-  if (Number.isFinite(prevSize)) doc.fontSize(prevSize);
 };
 
 export const drawGithubIcon = (doc, x, y, size, color) => {
   if (![x, y, size].every(Number.isFinite)) return;
-  const prevFont = doc._font;
-  const prevSize = doc._fontSize;
   doc.save();
   const cx = x + size / 2;
   const cy = y + size / 2;
-  const r = size / 2;
+  const r = size * 0.42;
   doc.circle(cx, cy, r).lineWidth(0.9).strokeColor(color).stroke();
-  doc.font("Helvetica-Bold").fontSize(size * 0.42).fillColor(color).text("</>", x, y + size * 0.28, { width: size, align: "center", lineBreak: false });
+  doc.circle(cx - size * 0.15, cy - size * 0.08, size * 0.045).fillColor(color).fill();
+  doc.circle(cx + size * 0.15, cy - size * 0.08, size * 0.045).fillColor(color).fill();
+  doc.moveTo(cx - size * 0.16, cy + size * 0.12).quadraticCurveTo(cx, cy + size * 0.25, cx + size * 0.16, cy + size * 0.12).strokeColor(color).lineWidth(size * 0.06).stroke();
   doc.restore();
-  if (prevFont) doc.font(prevFont);
-  if (Number.isFinite(prevSize)) doc.fontSize(prevSize);
 };
 
 export const drawLinkIcon = (doc, x, y, size, color) => {
@@ -59,6 +56,7 @@ export const drawLinkIcon = (doc, x, y, size, color) => {
   doc.ellipse(x + size * 0.7, y + size * 0.5, size * 0.28, size * 0.16).stroke();
   doc.restore();
 };
+
 
 export const ICON_MAP = {
   mail: drawMailIcon,
