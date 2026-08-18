@@ -38,6 +38,7 @@ const achievementSchema = new mongoose.Schema({
     description: String
 }, { _id: false });
 
+
 const generateSchema = new mongoose.Schema({
 
     user: {
@@ -63,19 +64,21 @@ const generateSchema = new mongoose.Schema({
     },
 
     name: String,
+    title: String,        // ← added
     email: String,
     phone: String,
     location: String,
-    linkedin: String,
-    github: String,
-    portfolio: String,
+
+    links: {               // ← changed from flat linkedin/github/portfolio
+        linkedin: String,
+        github: String,
+        portfolio: String
+    },
 
     summary: String,
 
     education: [educationSchema],
-
     experience: [experienceSchema],
-
     projects: [projectSchema],
 
     skills: {
@@ -87,16 +90,11 @@ const generateSchema = new mongoose.Schema({
     },
 
     certifications: [certificationSchema],
-
     achievements: [achievementSchema],
+
     status: {
         type: String,
-        enum: [
-            "parsed",
-            "building",
-            "completed",
-            "failed"
-        ],
+        enum: ["parsed", "building", "completed", "failed"],
         default: "parsed"
     }
 
